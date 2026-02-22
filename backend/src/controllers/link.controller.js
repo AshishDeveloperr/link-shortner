@@ -1,13 +1,13 @@
 const Link = require('../models/link.models');
 const { generateShortUrl } = require('../helpers/generateShortUrl');
 
-// POST /api/links - Create a new short link
+// POST /api/links - create short url
 const createLink = async (req, res) => {
-    try {
-        const { originalUrl } = req.body;
+    try{
+        const {originalUrl} = req.body;
 
-        if (!originalUrl) {
-            return res.status(400).json({ error: 'originalUrl is required' });
+        if(!originalUrl){
+            return res.status(400).json({error: 'originalUrl is required'});
         }
 
         const shortUrl = await generateShortUrl();
@@ -18,34 +18,43 @@ const createLink = async (req, res) => {
         });
 
         res.status(201).json({
-            originalUrl: link.originalUrl,
-            shortUrl: link.shortUrl,
-            openCount: link.openCount
+            status: 'success',
+            data: {
+                originalUrl: link.originalUrl,
+                shortUrl: link.shortUrl,
+                openCount: link.openCount
+            }
+
         });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    } catch(error){
+        res.status(500).json({error: error.message});
     }
 };
 
-// GET /api/links/:shortUrl - Get and redirect to original URL
+// GET /api/links/:shortUrl - get original url based on shorturl
 const getLink = async (req, res) => {
-    try {
-        const { shortUrl } = req.params;
+    try{
+        const {shortUrl} = req.params;
 
-        const link = await Link.findOneAndUpdate(
-            { shortUrl },
-            { $inc: { openCount: 1 } },
-            { returnDocument: 'after' }
+        const link = await link.findOneAndUpdate(
+            {shortUrl},
+            {$inc: {openCount: 1}},
+            {returnDocument: 'after'}
         );
 
-        if (!link) {
-            return res.status(404).json({ error: 'Link not found' });
+        if(!link){
+            return res.status(404).json({error: 'link not found'});
         }
 
-        res.redirect(link.originalUrl);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(200).json({
+            status: 'success',
+            data:{
+                originalUrl: link.originalUrl
+            }
+        })
+    } catch(error){
+        res.status(500).json({error: error.message});
     }
-};
+}
 
 module.exports = { createLink, getLink };
