@@ -36,7 +36,7 @@ const getLink = async (req, res) => {
     try{
         const {shortUrl} = req.params;
 
-        const link = await link.findOneAndUpdate(
+        const link = await Link.findOneAndUpdate(
             {shortUrl},
             {$inc: {openCount: 1}},
             {returnDocument: 'after'}
