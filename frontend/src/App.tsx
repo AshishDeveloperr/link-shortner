@@ -1,33 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { useState } from 'react'
+import Logo from './assets/img/logo.png'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <section className="min-h-screen bg-gradient-animation flex items-center justify-center">
+        <div className="w-full max-w-2xl px-6">
+          <div className="flex justify-center">
+            <img src={Logo} alt="Logo" className="h-20" />
+          </div>
+          <h1 className="text-xl font-bold text-center text-white mb-8">Link Shortener</h1>
+          
+          <div className="relative">
+            <input 
+              type="url" 
+              placeholder="Paste your long URL here..."
+              className="w-full px-6 py-4 bg-zinc-900/80 border border-zinc-700 rounded-full text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-500 text-base"
+            />
+            <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition-colors">
+              Shorten
+            </button>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
