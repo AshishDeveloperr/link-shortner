@@ -3,11 +3,11 @@ const { generateShortUrl } = require('../helpers/generateShortUrl');
 
 // POST /api/links - create short url
 const createLink = async (req, res) => {
-    try {
-        const { originalUrl } = req.body;
+    try{
+        const {originalUrl} = req.body;
 
-        if (!originalUrl) {
-            return res.status(400).json({ error: 'originalUrl is required' });
+        if(!originalUrl){
+            return res.status(400).json({error: 'originalUrl is required'});
         }
 
         const shortUrl = await generateShortUrl();
@@ -26,29 +26,34 @@ const createLink = async (req, res) => {
             }
 
         });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    } catch(error){
+        res.status(500).json({error: error.message});
     }
 };
 
 // GET /api/links/:shortUrl - get original url based on shorturl
 const getLink = async (req, res) => {
-    try {
-        const { shortUrl } = req.params;
+    try{
+        const {shortUrl} = req.params;
 
         const link = await Link.findOneAndUpdate(
-            { shortUrl },
-            { $inc: { openCount: 1 } },
-            { returnDocument: 'after' }
+            {shortUrl},
+            {$inc: {openCount: 1}},
+            {returnDocument: 'after'}
         );
 
-        if (!link) {
-            return res.status(404).json({ error: 'link not found' });
+        if(!link){
+            return res.status(404).json({error: 'link not found'});
         }
 
-        return res.redirect(link.originalUrl);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(200).json({
+            status: 'success',
+            data:{
+                originalUrl: link.originalUrl
+            }
+        })
+    } catch(error){
+        res.status(500).json({error: error.message});
     }
 }
 
